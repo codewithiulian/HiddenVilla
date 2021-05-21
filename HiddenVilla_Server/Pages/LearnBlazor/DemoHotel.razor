@@ -1,20 +1,32 @@
 ﻿@page "/demohotel"
 
 <h3>We will display hotel rooms and amenitites here!</h3>
-<div class="bg-light">
+<div class="container bg-light">
     <h3 class="text-info">Room List [USING COMPONENT]</h3>
 
+    <h4 class="text-info">Hotel Rooms</h4>
     <div class="row">
+
         @foreach (var room in RoomsList)
         {
             <IndividualRoom Room="@room"></IndividualRoom>
+        }
+    </div>
+
+    <h4 class="text-info">Hotel Amenities</h4>
+    <div class="row">
+
+        @foreach (var amenity in Amenities)
+        {
+            <IndividualAmenity Amenity="@amenity"></IndividualAmenity>
         }
     </div>
 </div>
 
 
 @code {        
-    List<Model.BlazorRoom> RoomsList = new List<BlazorRoom>();
+    List<BlazorRoom> RoomsList = new List<BlazorRoom>();
+    List<HotelAmenity> Amenities = new List<HotelAmenity>();
 
     protected override void OnInitialized()
     {
@@ -43,6 +55,28 @@
                         new BlazorRoomProp { Id = 3, Name = "Sq Ft", Value = "70" },
                         new BlazorRoomProp { Id = 4, Name = "Occupancy", Value = "2" }
                     }
+            });
+
+        Amenities.Add(
+            new HotelAmenity
+            {
+                Id = 111,
+                Name = "Gym",
+                Description = "24x7 gym room is available."
+            });
+        Amenities.Add(
+            new HotelAmenity
+            {
+                Id = 222,
+                Name = "Swimming Pool",
+                Description = "Pool room is open from 6am to 10pm."
+            });
+        Amenities.Add(
+            new HotelAmenity
+            {
+                Id = 333,
+                Name = "Free breakfast",
+                Description = "Enjoy free breakfast at our hotel."
             });
     }
 }
