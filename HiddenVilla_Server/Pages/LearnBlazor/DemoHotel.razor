@@ -1,5 +1,4 @@
 ﻿@page "/demohotel"
-@using Model
 
 <h3>We will display hotel rooms and amenitites here!</h3>
 <div class="bg-light">
@@ -8,21 +7,7 @@
     <div class="row">
         @foreach (var room in RoomsList)
         {
-            <div class="col bg-light">
-                <h5 class="text-secondary">Room - @room.Id</h5>
-                <span>@room.RoomName</span> <br />
-                <span>@room.Price.ToString("c")</span> <br />
-                <label><input type="checkbox" @bind-value="@room.IsActive" @bind-value:event="onchange" checked="@room.IsActive" /> Is Active</label> <br />
-                <span>This room is @(room.IsActive ? "active" : "inactive")</span> <br />
-                @if (room.IsActive)
-                {
-                    foreach (var prop in room.RoomProps)
-                    {
-                        <span>@prop.Name - @prop.Value</span> <br />
-                    }
-                }
-                <EditDeleteButton IsAdmin="true"></EditDeleteButton>
-            </div>
+            <IndividualRoom Room="@room"></IndividualRoom>
         }
     </div>
 </div>
