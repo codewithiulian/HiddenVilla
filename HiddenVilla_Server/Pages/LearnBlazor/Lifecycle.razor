@@ -3,7 +3,7 @@
 <h3>Lifecycle</h3>
 
 <div class="border">
-    <LifecycleComponent></LifecycleComponent>
+    <LifecycleComponent CounterValue="@currentCount"></LifecycleComponent>
 </div>
 
 <h1>Counter</h1>
@@ -13,10 +13,25 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 
-@foreach (var item in EventType)
-{
-    <div class="row">@item</div>
-}
+<div class="col-6">
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Event</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < EventType.Count; i++)
+            {
+                <tr>
+                    <td scope="row">@(i+1)</td>
+                    <td scope="row">@EventType[i]</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 @code {
     private int currentCount = 0;
@@ -35,6 +50,17 @@
     protected override async Task OnInitializedAsync()
     {
         EventType.Add("OnInitializedAsync called");
+        await Task.Delay(1000);
+    }
+
+    protected override void OnParametersSet()
+    {
+        EventType.Add("OnParametersSet called");
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        EventType.Add("OnParametersSetAsync called");
         await Task.Delay(1000);
     }
 }
