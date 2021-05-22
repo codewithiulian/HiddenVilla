@@ -36,4 +36,11 @@
     {
         EventType.Add("Child - OnParametersSet called");
     }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        // This gets added to the list but it's not rendered on this iteration
+        // because the DOM is already rendered at the point of calling this method.
+        EventType.Add("Child - OnAfterRender called");
+    }
 }

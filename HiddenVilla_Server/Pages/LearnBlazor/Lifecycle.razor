@@ -63,5 +63,16 @@
         EventType.Add("OnParametersSetAsync called");
         await Task.Delay(1000);
     }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        EventType.Add("OnAfterRender called");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        EventType.Add("OnAfterRenderAsync called");
+        await Task.Delay(1000);
+    }
 }
 
