@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HiddenVilla_Server.Model
 {
-    public class HotelAmenity
+    public class BlazorAmenities
     {
         public int Id { get; set; }
         public string Name { get; set; }
