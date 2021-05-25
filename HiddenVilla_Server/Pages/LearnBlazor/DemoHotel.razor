@@ -19,14 +19,16 @@
 
         @foreach (var amenity in AmenitiesList)
         {
-            <IndividualAmenities Amenity="@amenity"></IndividualAmenities>
+            <IndividualAmenities Amenities="@amenity" OnAmenitySelection="AmenitySelectionChanged"></IndividualAmenities>
         }
     </div>
+    <p>Selected Amenity: @SelectedAmenity</p>
 </div>
 
 
 @code {        
     public int SelectedRoomsCount { get; set; } = 0;
+    public string SelectedAmenity { get; set; }
 
     List<BlazorRoom> RoomsList = new List<BlazorRoom>();
     List<BlazorAmenities> AmenitiesList = new List<BlazorAmenities>();
@@ -93,5 +95,10 @@
         {
             SelectedRoomsCount--;
         }
+    }
+
+    protected void AmenitySelectionChanged(string amenityName)
+    {
+        SelectedAmenity = amenityName;
     }
 }
