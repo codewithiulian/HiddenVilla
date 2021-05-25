@@ -1,7 +1,7 @@
 ﻿
 <div class="col-5 bg-light m-1 border border-info">
     <h5 class="text-secondary">Room - @Room.Id</h5>
-    <span>@Room.RoomName</span> <br />
+    <label><input type="checkbox" @onchange="OnRoomCheckboxSelectionChanged" /> @Room.RoomName</label> <br />
     <span>@Room.Price.ToString("c")</span> <br />
     <label><input type="checkbox" @bind-value="@Room.IsActive" @bind-value:event="onchange" checked="@Room.IsActive" /> Is Active</label> <br />
     <span>This Room is @(Room.IsActive ? "active" : "inactive")</span> <br />
@@ -18,4 +18,12 @@
 @code {
     [Parameter]
     public BlazorRoom Room { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnRoomCheckBoxSelection { get; set; }
+
+    protected async Task OnRoomCheckboxSelectionChanged(ChangeEventArgs e)
+    {
+        await OnRoomCheckBoxSelection.InvokeAsync((bool)e.Value);
+    }
 }

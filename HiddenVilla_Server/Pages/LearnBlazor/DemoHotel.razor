@@ -5,11 +5,12 @@
     <h3 class="text-info">Room List [USING COMPONENT]</h3>
 
     <h4 class="text-info">Hotel Rooms</h4>
+    <p>Selected Rooms: @SelectedRoomsCount</p>
     <div class="row">
 
         @foreach (var room in RoomsList)
         {
-            <IndividualRoom Room="@room"></IndividualRoom>
+            <IndividualRoom Room="@room" OnRoomCheckBoxSelection="SelectedRoomsCounterChanged"></IndividualRoom>
         }
     </div>
 
@@ -25,6 +26,8 @@
 
 
 @code {        
+    public int SelectedRoomsCount { get; set; } = 0;
+
     List<BlazorRoom> RoomsList = new List<BlazorRoom>();
     List<BlazorAmenities> AmenitiesList = new List<BlazorAmenities>();
 
@@ -78,5 +81,17 @@
                 Name = "Free breakfast",
                 Description = "Enjoy free breakfast at our hotel."
             });
+    }
+
+    protected void SelectedRoomsCounterChanged(bool isSelected)
+    {
+        if (isSelected)
+        {
+            SelectedRoomsCount++;
+        }
+        else
+        {
+            SelectedRoomsCount--;
+        }
     }
 }
