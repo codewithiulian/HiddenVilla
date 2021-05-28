@@ -1,13 +1,14 @@
 ﻿<div>
     <h4 class="text-primary pt-3">Another Child Component</h4>
-    <input type="text" placeholder="@Placeholder" required="@Required" maxlength="@MaxLenth" />
+    <input class="form-control" type="text" @attributes="InputAttributes" />
 </div>
 
 @code {
     [Parameter]
-    public string Placeholder { get; set; } = "Initial Text";
-    [Parameter]
-    public string Required { get; set; } = "required";
-    [Parameter]
-    public string MaxLenth { get; set; } = "10";
+    public Dictionary<string, object> InputAttributes { get; set; } = new Dictionary<string, object>()
+    {
+        { "placeholder", "Initial Text" },
+        { "required", "required" },
+        { "maxlength", "10" }
+    };
 }
