@@ -19,7 +19,10 @@
 
         @foreach (var amenity in AmenitiesList)
         {
-            <IndividualAmenities Amenities="@amenity" OnAmenitySelection="AmenitySelectionChanged"></IndividualAmenities>
+            <IndividualAmenities Amenities="@amenity" OnAmenitySelection="AmenitySelectionChanged">
+                <FragmentOne>#1</FragmentOne>
+                <FragmentTwo>#2</FragmentTwo>
+            </IndividualAmenities>
         }
     </div>
     <p>Selected Amenity: @SelectedAmenity</p>

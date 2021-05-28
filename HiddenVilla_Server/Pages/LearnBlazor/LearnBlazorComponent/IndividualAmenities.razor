@@ -3,6 +3,10 @@
     <h5 class="text-secondary">Amenity - @Amenities.Id</h5>
     @Amenities.Name <br />
     @Amenities.Description<br />
+    @if (FragmentOne != null || FragmentTwo != null)
+    {
+        <span>RF from Parent - @FragmentOne @FragmentTwo</span> 
+    }
 </div>
 
 @code {
@@ -11,6 +15,11 @@
 
     [Parameter]
     public EventCallback<string> OnAmenitySelection { get; set; }
+
+    [Parameter]
+    public RenderFragment FragmentOne { get; set; }
+    [Parameter]
+    public RenderFragment FragmentTwo { get; set; }
 
     public bool IsSelected { get; set; }
 
