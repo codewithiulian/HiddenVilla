@@ -1,17 +1,21 @@
 ﻿@page "/ParentComponent"
 
 <h1 class="text-danger">Parent Child Component</h1>
-<CascadingValue Value="@messageForGrandChild">
-    <ChildComponent Title="This title is passed as parameter from Parent Component" OnClickBtnMethod="ShowMessage">
-        <ChildContent>Render Fragment From Parent! WooHOO!</ChildContent>
-        <DangerChildContent>Danger Content from Render Fragment! WooHOO!</DangerChildContent>
-    </ChildComponent>
+<CascadingValue Value="@messageForGrandChild" Name="GrandChildMessage">
+    <CascadingValue Value="@luckyNumberForGrandChild" Name="GrandParentLuckyNumber">
+        <ChildComponent Title="This title is passed as parameter from Parent Component" OnClickBtnMethod="ShowMessage">
+            <ChildContent>Render Fragment From Parent! WooHOO!</ChildContent>
+            <DangerChildContent>Danger Content from Render Fragment! WooHOO!</DangerChildContent>
+        </ChildComponent>
+    </CascadingValue>
 </CascadingValue>
 <AnotherChildComponent placeholder="Placeholder default"></AnotherChildComponent>
 
 <p><b>@messageText</b></p>
 
 @code {
+    public string luckyNumberForGrandChild { get; set; } = "7";
+
     private string messageText = "";
     private string messageForGrandChild = "This is a message from Grand Parent";
 
