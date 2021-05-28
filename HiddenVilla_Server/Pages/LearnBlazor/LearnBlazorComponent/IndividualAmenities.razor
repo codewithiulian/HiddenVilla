@@ -3,9 +3,9 @@
     <h5 class="text-secondary">Amenity - @Amenities.Id</h5>
     @Amenities.Name <br />
     @Amenities.Description<br />
-    @if (FragmentOne != null || FragmentTwo != null)
+    @if (FirstFragment != null || SecondFragment != null)
     {
-        <span>RF from Parent - @FragmentOne @FragmentTwo</span> 
+        <span>RF from Parent - @FirstFragment @SecondFragment</span> 
     }
 </div>
 
@@ -17,9 +17,9 @@
     public EventCallback<string> OnAmenitySelection { get; set; }
 
     [Parameter]
-    public RenderFragment FragmentOne { get; set; }
+    public RenderFragment FirstFragment { get; set; }
     [Parameter]
-    public RenderFragment FragmentTwo { get; set; }
+    public RenderFragment SecondFragment { get; set; }
 
     public bool IsSelected { get; set; }
 
