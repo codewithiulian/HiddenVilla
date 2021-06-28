@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using HiddenVilla_Server.Data;
 using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace HiddenVilla_Server
 {
@@ -29,6 +30,9 @@ namespace HiddenVilla_Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
