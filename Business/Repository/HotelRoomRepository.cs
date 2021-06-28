@@ -32,24 +32,88 @@ namespace Business.Repository
             return _mapper.Map<HotelRoom, HotelRoomDTO>(addedHotelRoom.Entity);
         }
 
-        public Task<IEnumerable<HotelRoomDTO>> GetAllHotelRooms()
+        public async Task<IEnumerable<HotelRoomDTO>> GetAllHotelRooms()
         {
-            throw new NotImplementedException();
+            try
+            {
+                IEnumerable<HotelRoomDTO> hotelRoomDTOs = _mapper.Map<IEnumerable<HotelRoom>, IEnumerable<HotelRoomDTO>>(_db.HotelRooms);
+
+                return hotelRoomDTOs;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
-        public Task<HotelRoomDTO> GetHotelRoom(int roomId)
+        public async Task<HotelRoomDTO> GetHotelRoom(int roomId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                HotelRoomDTO hotelRoomDTO = _mapper.Map<HotelRoom, HotelRoomDTO>(_db.HotelRooms.FirstOrDefault(o => o.Id == roomId));
+
+                return hotelRoomDTO;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
-        public Task<HotelRoomDTO> IsSameNameRoomAlreadyPresent(string name)
+        // if unique returns null, else returns the room obj.
+        public async Task<HotelRoomDTO> IsRoomUnique(string name)
         {
-            throw new NotImplementedException();
+            try
+            {
+                HotelRoomDTO hotelRoomDTO = _mapper.Map<HotelRoom, HotelRoomDTO>(_db.HotelRooms.FirstOrDefault(o => o.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase)));
+
+                return hotelRoomDTO;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
-        public Task<HotelRoomDTO> UpdateHotelRoom(int roomId, HotelRoomDTO hotelRoomDTO)
+        public async Task<HotelRoomDTO> UpdateHotelRoom(int roomId, HotelRoomDTO hotelRoomDTO)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (roomId == hotelRoomDTO.Id)
+                {
+                    // valid
+                    HotelRoom roomDetails = await _db.HotelRooms.FindAsync(roomId); // get current room record from DB.
+                    HotelRoom room = _mapper.Map<HotelRoomDTO, HotelRoom>(hotelRoomDTO, roomDetails); // map updated dto to db entity obj
+                    room.UpdatedBy = ""; // update some fields
+                    room.UpdatedDate = DateTime.Now;
+                    var updatedRoom = _db.HotelRooms.Update(room); // Update the db entity
+                    await _db.SaveChangesAsync(); // save the changes
+
+                    return _mapper.Map<HotelRoom, HotelRoomDTO>(updatedRoom.Entity); // return updated entity as a dto
+                }
+                else
+                {
+                    // invalid
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public async Task<int> DeleteHotelRoom(int roomId)
+        {
+            var roomDetails = await _db.HotelRooms.FindAsync(roomId);
+
+            if (roomDetails != null)
+            {
+                _db.HotelRooms.Remove(roomDetails);
+                return await _db.SaveChangesAsync(); // returns the no of rows affected.
+            }
+
+            return 0;
         }
     }
 }
