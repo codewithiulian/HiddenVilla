@@ -16,5 +16,13 @@ namespace HiddenVilla_Server.Helper
         {
             await jsRuntime.InvokeVoidAsync("ShowToastr", "error", message);
         }
+        public static async ValueTask PopupSuccess(this IJSRuntime jSRuntime, string message)
+        {
+            await jSRuntime.InvokeVoidAsync("ShowPopup", "success", message);
+        }
+        public static async ValueTask PopupError(this IJSRuntime jSRuntime, string message)
+        {
+            await jSRuntime.InvokeVoidAsync("ShowPopup", "error", message);
+        }
     }
 }

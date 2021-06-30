@@ -1,14 +1,18 @@
 ﻿@page "/blazorjs"
-@inject IJSRuntime JsRuntime 
+@inject IJSRuntime JsRuntime
 
 <h3>BlazorJS</h3>
 
 <div class="row">
     <button class="btn btn-secondary" @onclick="() => TestConfirmBox(ConfirmMessage)">Test Confirm Button</button>
 </div>
-<div class="row">
+<div class="row mt-3">
     <button class="btn btn-success" @onclick='() => TestSuccess("Success Message")'>Test Toastr Success</button>
     <button class="btn btn-danger" @onclick='() => TestFailure("Error Message")'>Test Toastr Failure</button>
+</div>
+<div class="row mt-3">
+    <button class="btn btn-success" @onclick='() => TestPopupSuccess("Success Message WooHoo!")'>Test Swall Success</button>
+    <button class="btn btn-danger" @onclick='() => TestPopupFailure("Error Message Ugh Oh!")'>Test Swall Failure</button>
 </div>
 
 <div class="row">
@@ -39,5 +43,15 @@
     private async Task TestFailure(string message)
     {
         await JsRuntime.ToastrError(message);
+    }
+
+    private async Task TestPopupSuccess(string message)
+    {
+        await JsRuntime.PopupSuccess(message);
+    }
+
+    private async Task TestPopupFailure(string message)
+    {
+        await JsRuntime.PopupError(message);
     }
 }
