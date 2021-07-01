@@ -9,7 +9,10 @@ namespace DataAccess.Migrations
             // To add this I opened PM console
             // ran 'add-migration CreateDatabase'
             // then 'update-database'
-            // or from PS:
+            // to be able to do this from PS:
+            // dotnet tool install --global dotnet-ef
+            // Install-Package Microsoft.EntityFrameworkCore.Tools # Run this in PS as administrator. This may take a while
+            // then you could run it from PowerShell:
             // dotnet-ef database update --project .\HiddenVilla_Server\
             // run the app: dotnet watch run --project .\HiddenVilla_Server\ -debug
         }

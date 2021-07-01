@@ -2,6 +2,7 @@
 @using Models
 @using Business.Repository.IRepository
 @inject IHotelRoomRepository HotelRoomRepository
+@inject NavigationManager NavigationManager
 
 <div class="row mt-4">
     <div class="col-8">
@@ -29,12 +30,15 @@
                 {
                     foreach (var room in HotelRooms)
                     {
+                        @*@onclick="() => NavigateToRoom(room.Id)"*@
                         <tr>
                             <td>@room.Name</td>
                             <td>@room.Occupancy</td>
                             <td>@room.RegularRate.ToString("c")</td>
                             <td>@room.SqFt</td>
-                            <td></td>
+                            <td>
+                                <NavLink href="@($"hotel-room/edit/{room.Id}")" class="btn btn-sm btn-primary">Edit</NavLink>
+                            </td>
                         </tr>
                     }
                 }
@@ -51,6 +55,11 @@
 
 @code {
     private IEnumerable<HotelRoomDTO> HotelRooms { get; set; } = new List<HotelRoomDTO>();
+
+    private void NavigateToRoom(int Id)
+    {
+        NavigationManager.NavigateTo($"hotel-room/edit/{Id}");
+    }
 
     protected override async Task OnInitializedAsync()
     {
