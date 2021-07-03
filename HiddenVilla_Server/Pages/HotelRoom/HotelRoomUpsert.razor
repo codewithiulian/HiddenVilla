@@ -4,6 +4,7 @@
 @using Business.Repository.IRepository
 @inject IHotelRoomRepository HotelRoomRepository
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
 
 <div class="row mt-2 mb-5">
     <h3 class="card-title text-info mb-3 ml-3">@Title Hotel Room</h3>
@@ -69,14 +70,35 @@
 
     private async Task HandleHotelRoomUpsert()
     {
-        var roomDetailsByName = await HotelRoomRepository.IsRoomUnique(HotelRoomModel.Name);
-        if (roomDetailsByName != null)
+        try
         {
-            // there is duplicate room show error
-            return;
-        }
-        var createdResult = await HotelRoomRepository.CreateHotelRoom(HotelRoomModel);
+            var roomDetailsByName = await HotelRoomRepository.IsRoomUnique(HotelRoomModel.Name, HotelRoomModel.Id);
+            if (roomDetailsByName != null)
+            {
+                // there is duplicate room show error
+                await JsRuntime.ToastrError("The room name is already taken! Please choose a different one");
+                return;
+            }
 
-        NavigationManager.NavigateTo("hotel-room");
+            if (Id != null)
+            {
+                // update
+                var updatedResult = await HotelRoomRepository.UpdateHotelRoom(Id.Value, HotelRoomModel);
+                await JsRuntime.ToastrSuccess("Hotel room updated successfully!");
+                NavigationManager.NavigateTo("hotel-room");
+            }
+            else
+            {
+                // create
+                var createdResult = await HotelRoomRepository.CreateHotelRoom(HotelRoomModel);
+                await JsRuntime.ToastrSuccess("Hotel room created successfully!");
+                NavigationManager.NavigateTo($"hotel-room/edit/{createdResult.Id}", forceLoad: true);
+            }
+
+        }
+        catch (Exception)
+        {
+            await JsRuntime.ToastrError("There was an error attempting to save the room details! Please reload the page and try again.");
+        }
     }
 }

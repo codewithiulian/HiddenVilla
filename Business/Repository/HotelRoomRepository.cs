@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Business.Repository.IRepository;
 using DataAccess.Data;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -61,17 +62,28 @@ namespace Business.Repository
         }
 
         // if unique returns null, else returns the room obj.
-        public async Task<HotelRoomDTO> IsRoomUnique(string name)
+        public async Task<HotelRoomDTO> IsRoomUnique(string name, int roomId = 0)
         {
             try
             {
-                HotelRoomDTO hotelRoomDTO = _mapper.Map<HotelRoom, HotelRoomDTO>(_db.HotelRooms.FirstOrDefault(o => o.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase)));
+                if (roomId == 0)
+                {
+                    HotelRoomDTO hotelRoomDTO = _mapper.Map<HotelRoom, HotelRoomDTO>(
+                            await _db.HotelRooms.FirstOrDefaultAsync(o => o.Name.ToLower() == name.ToLower()));
 
-                return hotelRoomDTO;
+                    return hotelRoomDTO;
+                }
+                else
+                {
+                    HotelRoomDTO hotelRoomDTO = _mapper.Map<HotelRoom, HotelRoomDTO>(
+                        await _db.HotelRooms.FirstOrDefaultAsync(o => o.Name.ToLower() == name.ToLower() && o.Id != roomId));
+
+                    return hotelRoomDTO;
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return null;
+                throw;
             }
         }
 
