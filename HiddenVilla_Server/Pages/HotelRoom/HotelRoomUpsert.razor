@@ -5,6 +5,7 @@
 @inject IHotelRoomRepository HotelRoomRepository
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
+@inject Service.IService.IFileUpload fileUpload 
 
 <div class="row mt-2 mb-5">
     <h3 class="card-title text-info mb-3 ml-3">@Title Hotel Room</h3>
@@ -36,6 +37,9 @@
                     <div class="form-group">
                         <label>Details</label>
                         <InputTextArea @bind-Value="HotelRoomModel.Details" class="form-control"></InputTextArea>
+                    </div>
+                    <div class="form-group">
+                        <InputFile OnChange="HandleImageUpload" multiple></InputFile>
                     </div>
                     <div class="form-group">
                         <button class="btn btn-primary">@Title Room</button>
@@ -100,5 +104,10 @@
         {
             await JsRuntime.ToastrError("There was an error attempting to save the room details! Please reload the page and try again.");
         }
+    }
+
+    private async Task HandleImageUpload()
+    {
+        await fileUpload.UploadFile();
     }
 }
