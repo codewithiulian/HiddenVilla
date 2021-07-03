@@ -1,4 +1,7 @@
-﻿using Business.Repository.IRepository;
+﻿using AutoMapper;
+using Business.Repository.IRepository;
+using DataAccess.Data;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -10,24 +13,44 @@ namespace Business.Repository
 {
     public class HotelRoomImageRepository : IHotelRoomImageRepository
     {
-        public Task<int> CreateHotelRoomImage(HotelRoomImageDTO image)
+        private readonly ApplicationDBContext _db;
+        private readonly IMapper _mapper;
+
+        public HotelRoomImageRepository(ApplicationDBContext db, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _db = db;
+            _mapper = mapper;
         }
 
-        public Task<int> DeleteHotelRoomImageByImageId(int imageId)
+        public async Task<int> CreateHotelRoomImage(HotelRoomImageDTO imageDTO)
         {
-            throw new NotImplementedException();
+            var image = _mapper.Map<HotelRoomImageDTO, HotelRoomImage>(imageDTO);
+            await _db.HotelRoomImages.AddAsync(image);
+
+            return await _db.SaveChangesAsync();
         }
 
-        public Task<int> DeleteHotelRoomImageByRoomId(int roomId)
+        public async Task<int> DeleteHotelRoomImageByImageId(int imageId)
         {
-            throw new NotImplementedException();
+            var image = await _db.HotelRoomImages.FindAsync(imageId);
+            _db.HotelRoomImages.Remove(image);
+
+            return await _db.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<HotelRoomImageDTO>> GetHotelRoomImages(int roomId)
+        public async Task<int> DeleteHotelRoomImageByRoomId(int roomId)
         {
-            throw new NotImplementedException();
+            var images = _db.HotelRoomImages.Where(o => o.RoomId == roomId);
+            _db.HotelRoomImages.RemoveRange(images);
+
+            return await _db.SaveChangesAsync();
+        }
+
+        public IEnumerable<HotelRoomImageDTO> GetHotelRoomImages(int roomId)
+        {
+            var images = _db.HotelRoomImages.Where(o => o.RoomId == roomId);
+
+            return _mapper.Map<IEnumerable<HotelRoomImage>, IEnumerable<HotelRoomImageDTO>>(images);
         }
     }
 }
