@@ -3,6 +3,7 @@
 @using Models
 @using Business.Repository.IRepository
 @inject IHotelRoomRepository HotelRoomRepository
+@inject IHotelRoomImageRepository HotelRoomImageRepository
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
 @inject Service.IService.IFileUpload fileUpload 
@@ -75,6 +76,7 @@
     public int? Id { get; set; }
     private HotelRoomDTO HotelRoomModel { get; set; }
     private string Title { get; set; } = "Create";
+    private HotelRoomImageDTO RoomImage { get; set; } = new HotelRoomImageDTO();
 
     protected override async Task OnInitializedAsync()
     {
@@ -114,8 +116,10 @@
             {
                 // create
                 var createdResult = await HotelRoomRepository.CreateHotelRoom(HotelRoomModel);
+                await AddHotelRoomImage(createdResult);
                 await JsRuntime.ToastrSuccess("Hotel room created successfully!");
-                NavigationManager.NavigateTo($"hotel-room/edit/{createdResult.Id}", forceLoad: true);
+                NavigationManager.NavigateTo($"hotel-room");
+                //NavigationManager.NavigateTo($"hotel-room/edit/{createdResult.Id}", forceLoad: true);
             }
 
         }
@@ -171,6 +175,19 @@
         catch (Exception ex)
         {
             await JsRuntime.ToastrError(ex.Message);
+        }
+    }
+
+    private async Task AddHotelRoomImage(HotelRoomDTO roomDetails)
+    {
+        foreach (var imageUrl in HotelRoomModel.ImageUrls)
+        {
+            RoomImage = new HotelRoomImageDTO()
+            {
+                RoomId = roomDetails.Id,
+                RoomImageUrl = imageUrl
+            };
+            await HotelRoomImageRepository.CreateHotelRoomImage(RoomImage);
         }
     }
 }
